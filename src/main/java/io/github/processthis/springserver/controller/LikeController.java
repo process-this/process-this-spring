@@ -27,16 +27,9 @@ public class LikeController {
     return repository.getAllByOrderByCreated();
   }
 
-  @Transactional
-  @DeleteMapping(value = "{like}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void delete(@PathVariable("like") List likeList){
-    Like like = get(likeList);
-    like.forEach((like) -> .setLike(null));
-    repository.delete(like);
-  }
 
-//  TODO add delete mapping for every unlike
+
+//  TODO delete Like Controller
 
   @ResponseStatus(value = HttpStatus.NOT_FOUND)
   @ExceptionHandler(NoSuchElementException.class)
@@ -44,3 +37,6 @@ public class LikeController {
   }
 
 }
+
+
+
