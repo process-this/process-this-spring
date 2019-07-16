@@ -3,28 +3,7 @@ package io.github.processthis.springserver.model.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.sun.jndi.toolkit.url.Uri;
 import io.github.processthis.springserver.view.FlatUserProfile;
-import java.util.Date;
-import java.util.UUID;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityLinks;
-import org.springframework.lang.NonNull;
-import org.springframework.stereotype.Component;
 
-
-@Entity
-@Component
-@JsonIgnoreProperties(value = {"id","created","updated","href"},
-    allowGetters = true, ignoreUnknown = true)
 public class UserProfile implements FlatUserProfile {
 
   private static EntityLinks entityLinks;
