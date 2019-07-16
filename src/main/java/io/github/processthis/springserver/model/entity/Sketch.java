@@ -58,10 +58,14 @@ public class Sketch implements FlatSketch {
     @Column(nullable = false, unique = true)
     private String name;
 
+    public List<UserProfile> getUserProfiles() {
+        return userProfiles;
+    }
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "sketch",
         cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<Sketch> sketches = new LinkedList<>();
+    private List<UserProfile> userProfiles = new LinkedList<>();
 
 
     public String getName() {
@@ -97,10 +101,5 @@ public class Sketch implements FlatSketch {
     private void setEntityLinks(EntityLinks entityLinks){
       Sketch.entityLinks = entityLinks;
     }
-
-    public List<Sketch> getSketches() {
-      return sketches;
-    }
-
 
 }

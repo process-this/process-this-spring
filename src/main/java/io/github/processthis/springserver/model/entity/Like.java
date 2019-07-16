@@ -1,7 +1,6 @@
 package io.github.processthis.springserver.model.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import io.github.processthis.springserver.view.FlatLike;
 import io.github.processthis.springserver.view.FlatSketch;
 import io.github.processthis.springserver.view.FlatUserProfile;
 import java.util.Date;
@@ -25,7 +24,7 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Component
-public class Like implements FlatLike {
+public class Like {
 
   @Id
   @GeneratedValue(generator = "uuid2")
@@ -85,4 +84,3 @@ public class Like implements FlatLike {
 //users/{id}/like/{sketch_id} users and their id to see the sketches they have like'd
 //will use sketch controller and user controller to delete likes
 
-// dont need LikeController and FlatLike

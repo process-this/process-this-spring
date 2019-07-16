@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.UUID;
 import javax.transaction.Transactional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,7 +35,7 @@ import org.springframework.web.bind.annotation.RestController;
     private final UserProfileRepository userProfileRepository;
     private final LikeRepository likeRepository;
 
-
+    @Autowired
     public SketchController(
         SketchRepository repository,
         UserProfileRepository userProfileRepository,
@@ -54,8 +55,12 @@ import org.springframework.web.bind.annotation.RestController;
       return repository.findById(id).get();
     }
 
+    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    public List<Like> getLikes() {return likeRepository.getAllByOrderByCreated();}
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE)
+
     public ResponseEntity<Sketch> post(@RequestBody Sketch sketch) {
       repository.save(sketch);
       return ResponseEntity.created(sketch.getHref()).body(sketch);
@@ -65,21 +70,22 @@ import org.springframework.web.bind.annotation.RestController;
     @ExceptionHandler(NoSuchElementException.class)
     public void notFound() {
     }
+  }
 
-    @Transactional
-    @DeleteMapping(value = "{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("id") UUID id) {
-      Sketch sketch = get(id);
-      List<Like> like = sketch.getLikes();
+   // @Transactional
+   // @DeleteMapping(value = "{id}")
+   // @ResponseStatus(HttpStatus.NO_CONTENT)
+   // public void delete(@PathVariable("id") UUID id) {
+   //   Sketch sketch = get(id);
+   //   List<Like> like = sketch.getLikes();
 //    for (Movie movie : genre.getMovies()){
 //      movie.setGenre(null);
 //    }
 
-      userProfileRepository.saveAll(userProfiles);
-      repository.delete(sketch);
-    }
+    //  userProfileRepository.saveAll(userProfiles);
+    //  repository.delete(sketch);
 
-  }
 
-}
+
+
+
