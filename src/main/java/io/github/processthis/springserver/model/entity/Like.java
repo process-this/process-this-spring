@@ -36,7 +36,12 @@ public class Like implements FlatLike {
   @ManyToOne(fetch = FetchType.LAZY)
   @JsonSerialize(contentAs = UserProfile.class)
   private List<UserProfile> userProfiles = new LinkedList<>();
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JsonSerialize(contentAs = Sketch.class)
   private List<Sketch> sketches = new LinkedList<>();
+
+
   //TODO verify if this is actually importing the foreign keys of Userprofiles and sketches.
 
   public Date getCreated() {
