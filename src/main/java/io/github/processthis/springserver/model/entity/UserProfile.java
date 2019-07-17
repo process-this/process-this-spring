@@ -1,27 +1,18 @@
 package io.github.processthis.springserver.model.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.sun.jndi.toolkit.url.Uri;
-import io.github.processthis.springserver.view.FlatSketch;
 import io.github.processthis.springserver.view.FlatUserProfile;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -61,31 +52,21 @@ public class UserProfile implements FlatUserProfile {
   @Column(nullable = false)
   private Date updated;
 
+  @Id
+  @GeneratedValue(generator = "uuid2")
+  @GenericGenerator(name = "uuid2", strategy = "uuid2")
+  @Column(name = "user_profile_id", columnDefinition = "CHAR(16) FOR BIT DATA",
+      nullable = false, updatable = false)
+  private UUID followId;
+
   @Column
   private String authId;
 
   @Column
   private String username;
 
-//  @Id
-//  @GeneratedValue(generator = "uuid2")
-//  @GenericGenerator(name = "uuid2", strategy = "uuid2")
-//  @Column(name = "user_profile_id", columnDefinition = "CHAR(16) FOR BIT DATA",
-//      nullable = false, updatable = false)
-//  private UUID followId;
-
-  @ManyToOne(fetch = FetchType.EAGER)
-  @JoinColumn(name = "sketch_id")
-  private Sketch sketch;
-
-  @Override
-  public String getUsername() {
-    return username;
-  }
-
-  public void setUsername(String username) {
-    this.username = username;
-  }
+  @Column
+  private String bio;
 
   @Override
   public UUID getId() {
@@ -107,22 +88,36 @@ public class UserProfile implements FlatUserProfile {
     return authId;
   }
 
+  @Override
+  public Sketch getSketches() {
+    return null;
+  }
+
+  @Override
+  public String getUsername() {
+    return username;
+  }
+
+  @Override
+  public UUID getFollowId() {
+    return followId;
+  }
+
+  @Override
+  public String getBio() {
+    return bio;
+  }
+
   public void setAuthId(String authId) {
     this.authId = authId;
   }
 
-//  @Override
-//  public UUID getFollowId() {
-//    return followId;
-//  }
-
-  @Override
-  public Sketch getSketch() {
-    return sketch;
+  public void setUsername(String username) {
+    this.username = username;
   }
 
-  public void setGenre(Sketch sketch) {
-    this.sketch = sketch;
+  public void setBio(String bio) {
+    this.bio = bio;
   }
 
   @Override
@@ -136,7 +131,7 @@ public class UserProfile implements FlatUserProfile {
   }
 
   @Autowired
-  public static void setEntityLinks(EntityLinks entityLinks) {
+  public void setEntityLinks(EntityLinks entityLinks) {
     UserProfile.entityLinks = entityLinks;
   }
 }

@@ -14,6 +14,8 @@ public interface FlatSketch {
 
   String getName();
 
+  String getSketchDescription();
+
   URI getHref();
 
 

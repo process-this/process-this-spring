@@ -1,10 +1,10 @@
 package io.github.processthis.springserver.view;
 
-import com.sun.jndi.toolkit.url.Uri;
+
 import io.github.processthis.springserver.model.entity.Sketch;
-import java.io.Serializable;
 import java.net.URI;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 public interface FlatUserProfile {
@@ -21,7 +21,11 @@ public interface FlatUserProfile {
 
  // UUID getFollowId();
 
-  Sketch getSketch();
+  Sketch getSketches();
+
+  UUID getFollowId();
+
+  String getBio();
 
   URI getHref();
 }
