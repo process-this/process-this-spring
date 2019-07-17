@@ -15,6 +15,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -31,7 +33,6 @@ import org.springframework.stereotype.Component;
 @Component
 @JsonIgnoreProperties(value = {"created", "updated", "href"}, allowGetters = true, ignoreUnknown = true)
 public class Sketch implements FlatSketch {
-
 
     private static EntityLinks entityLinks;
 
@@ -58,48 +59,60 @@ public class Sketch implements FlatSketch {
     @Column(nullable = false, unique = true)
     private String name;
 
-    public List<UserProfile> getUserProfiles() {
-        return userProfiles;
+    @Column
+    private String sketchDescription;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_profile_id")
+    private UserProfile userProfile;
+
+    @Override
+    public UUID getId() {
+        return id;
     }
 
-    @JsonIgnore
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sketch",
-        cascade = { CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    private List<UserProfile> userProfiles = new LinkedList<>();
+    @Override
+    public Date getCreated() {
+        return created;
+    }
 
+    @Override
+    public Date getUpdated() {
+        return updated;
+    }
 
+    @Override
     public String getName() {
-      return name;
+        return name;
+    }
+
+    @Override
+    public String getSketchDescription() {
+        return sketchDescription;
     }
 
     public void setName(String name) {
-      this.name = name;
+        this.name = name;
     }
 
-    public UUID getId() {
-      return id;
-    }
-
-    public Date getCreated() {
-      return created;
-    }
-
-    public Date getUpdated() {
-      return updated;
+    public void setSketchDescription(String sketchDescription) {
+        this.sketchDescription = sketchDescription;
     }
 
     public URI getHref(){
-      return entityLinks.linkForSingleResource(Sketch.class, id).toUri();
+        return entityLinks.linkForSingleResource(Sketch.class, id).toUri();
     }
 
     @PostConstruct
     private void init(){
-      String ignore = entityLinks.toString();
+        String ignore = entityLinks.toString();
     }
 
     @Autowired
     private void setEntityLinks(EntityLinks entityLinks){
-      Sketch.entityLinks = entityLinks;
+        Sketch.entityLinks = entityLinks;
     }
 
+
 }
+

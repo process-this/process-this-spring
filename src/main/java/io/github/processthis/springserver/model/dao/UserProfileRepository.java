@@ -9,7 +9,7 @@ import org.springframework.data.repository.CrudRepository;
 public interface UserProfileRepository extends CrudRepository<UserProfile, UUID> {
 
   List<UserProfile> getAllByOrderByUsernameAsc();
-  List<UserProfile> getAllBySketchOrderById(Sketch sketch);
+  List<UserProfile> getAllByOrderById(Sketch sketch);
   List<UserProfile> getAllByUsernameContainsOrderByUsernameAsc(String profileFragment);
 
 
