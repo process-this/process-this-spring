@@ -52,11 +52,11 @@ public class UserProfile implements FlatUserProfile {
   @Column(nullable = false)
   private Date updated;
 
-  @Id
-  @GeneratedValue(generator = "uuid2")
-  @GenericGenerator(name = "uuid2", strategy = "uuid2")
-  @Column(name = "user_profile_id", columnDefinition = "CHAR(16) FOR BIT DATA",
-      nullable = false, updatable = false)
+//  @Id
+//  @GeneratedValue(generator = "uuid2")
+//  @GenericGenerator(name = "uuid2", strategy = "uuid2")
+//  @Column(name = "user_profile_id", columnDefinition = "CHAR(16) FOR BIT DATA",
+//      nullable = false, updatable = false)
   private UUID followId;
 
   @Column

@@ -67,8 +67,8 @@ public class UserProfileController {
 
   @GetMapping(value = "{id}/sketches", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Sketch> getSketches(@PathVariable("id") UUID id) {
-    UserProfile userProfile = userProfileRepository.findById(id).get();
-    return sketchRepository.getAllByUserProfile(userProfile);
+    UserProfile sketch = userProfileRepository.findById(id).get();
+    return sketchRepository.getAllByUserProfile(sketch);
   }
 
 //  @PutMapping(value = "{userProfileId}/likes/{likeId}",
