@@ -21,8 +21,6 @@ public interface FlatUserProfile {
 
  // UUID getFollowId();
 
-  Sketch getSketches();
-
   UUID getFollowId();
 
   String getBio();

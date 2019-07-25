@@ -1,6 +1,8 @@
 package io.github.processthis.springserver.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import io.github.processthis.springserver.view.FlatSketch;
 import io.github.processthis.springserver.view.FlatUserProfile;
 import java.net.URI;
 import java.util.Date;
@@ -8,11 +10,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 import javax.annotation.PostConstruct;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -68,6 +73,14 @@ public class UserProfile implements FlatUserProfile {
   @Column
   private String bio;
 
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfile")
+  @JsonSerialize(contentAs = FlatSketch.class)
+  private List<Sketch> sketches = new LinkedList<>();
+
+  public List<Sketch> getSketches() {
+    return sketches;
+  }
+
   @Override
   public UUID getId() {
     return id;
@@ -86,11 +99,6 @@ public class UserProfile implements FlatUserProfile {
   @Override
   public String getAuthId() {
     return authId;
-  }
-
-  @Override
-  public Sketch getSketches() {
-    return null;
   }
 
   @Override
