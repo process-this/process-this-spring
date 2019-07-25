@@ -62,9 +62,18 @@ public class Sketch implements FlatSketch {
     @Column
     private String sketchDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_profile_id")
+    @ManyToOne(fetch = FetchType.LAZY,
+        cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JoinColumn(name = "user_profile")
     private UserProfile userProfile;
+
+    public UserProfile getUserProfile() {
+        return userProfile;
+    }
+
+    public void setUserProfile(UserProfile userProfile) {
+        this.userProfile = userProfile;
+    }
 
     @Override
     public UUID getId() {
@@ -86,13 +95,13 @@ public class Sketch implements FlatSketch {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public String getSketchDescription() {
         return sketchDescription;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 
     public void setSketchDescription(String sketchDescription) {

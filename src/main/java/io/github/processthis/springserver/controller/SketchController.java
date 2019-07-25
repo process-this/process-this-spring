@@ -56,9 +56,6 @@ public class SketchController {
     return repository.findById(id).get();
   }
 
-  //@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-  //public List<Like> getLike() {return likeRepository.getAllByOrderByCreated();}
-
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Sketch> post(@RequestBody Sketch sketch) {

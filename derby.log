@@ -1,6 +1,6 @@
 ----------------------------------------------------------------
-Wed Jul 17 11:29:08 MDT 2019:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-016c-00fb-0d19-00000aa07c98 
+Thu Jul 25 07:58:17 MDT 2019:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.14.2.0 - (1828579): instance a816c00e-016c-296c-e187-000009956578 
 on database directory C:\Users\matth\Desktop\bootcamp\projects\process-this-spring-server\movies_db with class loader sun.misc.Launcher$AppClassLoader@18b4aac2 
 Loaded from file:/C:/Users/matth/.m2/repository/org/apache/derby/derby/10.14.2.0/derby-10.14.2.0.jar
 java.vendor=Oracle Corporation
