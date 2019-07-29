@@ -34,7 +34,7 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Component
-@JsonIgnoreProperties(value = {"id","created","updated","href"},
+@JsonIgnoreProperties(value = {"id","created","updated","href", "sketches", "likes"},
     allowGetters = true, ignoreUnknown = true)
 public class UserProfile implements FlatUserProfile {
 
@@ -75,10 +75,14 @@ public class UserProfile implements FlatUserProfile {
   @Column(nullable = true)
   private String bio;
 
-  @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfile", cascade = {CascadeType.DETACH,
       CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   private List<Sketch> sketches = new LinkedList<>();
+
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfile", cascade = {CascadeType.DETACH,
+      CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  private List<Like> likes = new LinkedList<>();
 
   public List<Sketch> getSketches() {
     return sketches;
@@ -129,6 +133,10 @@ public class UserProfile implements FlatUserProfile {
 
   public void setBio(String bio) {
     this.bio = bio;
+  }
+
+  public List<Like> getLikes() {
+    return likes;
   }
 
   @Override

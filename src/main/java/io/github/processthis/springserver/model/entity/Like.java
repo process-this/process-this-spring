@@ -3,6 +3,7 @@ package io.github.processthis.springserver.model.entity;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.processthis.springserver.view.FlatSketch;
 import io.github.processthis.springserver.view.FlatUserProfile;
+import java.net.URI;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,12 +20,15 @@ import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.hateoas.EntityLinks;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 @Entity
 @Component
 public class Like {
+
+  private static EntityLinks entityLinks;
 
   @Id
   @GeneratedValue(generator = "uuid2")
@@ -75,6 +79,12 @@ public class Like {
   public void setSketch(Sketch sketch) {
     this.sketch = sketch;
   }
+
+  public URI getHref(){
+    return entityLinks.linkForSingleResource(UserProfile.class, getUserProfile().getId())
+        .slash("sketches").slash(sketch).slash("likes").slash(id).toUri();
+  }
+
 }
 
 

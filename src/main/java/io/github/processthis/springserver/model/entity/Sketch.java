@@ -66,6 +66,10 @@ public class Sketch implements FlatSketch {
     @JoinColumn(name = "user_profile")
     private UserProfile userProfile;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sketch", cascade = {CascadeType.DETACH,
+        CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private List<Like> likes = new LinkedList<>();
+
     public UserProfile getUserProfile() {
         return userProfile;
     }
@@ -105,6 +109,10 @@ public class Sketch implements FlatSketch {
 
     public void setSketchDescription(String sketchDescription) {
         this.sketchDescription = sketchDescription;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
     }
 
     public URI getHref(){
