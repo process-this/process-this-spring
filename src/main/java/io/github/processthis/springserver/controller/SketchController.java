@@ -5,6 +5,7 @@ import io.github.processthis.springserver.model.dao.SketchRepository;
 import io.github.processthis.springserver.model.dao.UserProfileRepository;
 import io.github.processthis.springserver.model.entity.Like;
 import io.github.processthis.springserver.model.entity.Sketch;
+
 import io.github.processthis.springserver.model.entity.UserProfile;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @ExposesResourceFor(Sketch.class)
-@RequestMapping("sketches")
+@RequestMapping("users/{userId}/sketches")
 public class SketchController {
 
   private final SketchRepository repository;
@@ -60,6 +61,15 @@ public class SketchController {
       produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Sketch> post(@RequestBody Sketch sketch) {
     repository.save(sketch);
+    return ResponseEntity.created(sketch.getHref()).body(sketch);
+  }
+
+  @PostMapping(value = "{userId}/sketches", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  public ResponseEntity<Sketch> attach(@PathVariable("userId") UUID userId, @RequestBody Sketch sketch) {
+    UserProfile userProfile = userProfileRepository.findById(userId).get();
+    sketch.setUserProfile(userProfile);
+    repository.save(sketch);
+    userProfileRepository.save(userProfile);
     return ResponseEntity.created(sketch.getHref()).body(sketch);
   }
 
