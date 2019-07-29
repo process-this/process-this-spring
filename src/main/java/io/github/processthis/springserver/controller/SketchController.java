@@ -52,19 +52,17 @@ public class SketchController {
     return repository.getAllByOrderByNameAsc();
   }
 
-  @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public Sketch get(@PathVariable("id") UUID id) {
-    return repository.findById(id).get();
+  @GetMapping(value = "{sketchId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public Sketch get(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId) {
+    Sketch sketch = repository.findById(sketchId).get();
+    if (!sketch.getUserProfile().getId().equals(userId)) {
+      throw new NoSuchElementException();
+    }
+    return sketch;
   }
 
-  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
-      produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Sketch> post(@RequestBody Sketch sketch) {
-    repository.save(sketch);
-    return ResponseEntity.created(sketch.getHref()).body(sketch);
-  }
 
-  @PostMapping(value = "{userId}/sketches", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+  @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Sketch> attach(@PathVariable("userId") UUID userId, @RequestBody Sketch sketch) {
     UserProfile userProfile = userProfileRepository.findById(userId).get();
     sketch.setUserProfile(userProfile);
