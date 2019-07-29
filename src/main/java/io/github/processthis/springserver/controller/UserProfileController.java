@@ -81,6 +81,7 @@ public class UserProfileController {
     return sketchRepository.getAllByUserProfile(sketch);
   }
 
+
   @ResponseStatus(value = HttpStatus.NOT_FOUND)
   @ExceptionHandler(NoSuchElementException.class)
   public void notFound(){

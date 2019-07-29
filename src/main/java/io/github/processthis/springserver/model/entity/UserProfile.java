@@ -1,5 +1,6 @@
 package io.github.processthis.springserver.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.processthis.springserver.view.FlatSketch;
@@ -19,6 +20,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import org.hibernate.annotations.CreationTimestamp;
@@ -64,17 +66,18 @@ public class UserProfile implements FlatUserProfile {
 //      nullable = false, updatable = false)
   private UUID followId;
 
-  @Column
+  @Column(nullable = false)
   private String authId;
 
-  @Column
+  @Column(nullable = false)
   private String username;
 
-  @Column
+  @Column(nullable = true)
   private String bio;
 
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfile")
-  @JsonSerialize(contentAs = FlatSketch.class)
+  @JsonIgnore
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfile", cascade = {CascadeType.DETACH,
+      CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
   private List<Sketch> sketches = new LinkedList<>();
 
   public List<Sketch> getSketches() {

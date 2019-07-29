@@ -62,8 +62,7 @@ public class Sketch implements FlatSketch {
     @Column
     private String sketchDescription;
 
-    @ManyToOne(fetch = FetchType.LAZY,
-        cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_profile")
     private UserProfile userProfile;
 
@@ -109,7 +108,8 @@ public class Sketch implements FlatSketch {
     }
 
     public URI getHref(){
-        return entityLinks.linkForSingleResource(Sketch.class, id).toUri();
+        return entityLinks.linkForSingleResource(UserProfile.class, getUserProfile().getId())
+            .slash("sketches").slash(id).toUri();
     }
 
     @PostConstruct
