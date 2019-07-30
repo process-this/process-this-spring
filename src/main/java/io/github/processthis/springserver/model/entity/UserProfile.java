@@ -59,12 +59,7 @@ public class UserProfile implements FlatUserProfile {
   @Column(nullable = false)
   private Date updated;
 
-//  @Id
-//  @GeneratedValue(generator = "uuid2")
-//  @GenericGenerator(name = "uuid2", strategy = "uuid2")
-//  @Column(name = "user_profile_id", columnDefinition = "CHAR(16) FOR BIT DATA",
-//      nullable = false, updatable = false)
-  private UUID followId;
+
 
   @Column(nullable = false)
   private String authId;
@@ -77,6 +72,7 @@ public class UserProfile implements FlatUserProfile {
 
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfile", cascade = {CascadeType.DETACH,
       CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JsonSerialize(contentAs = FlatSketch.class)
   private List<Sketch> sketches = new LinkedList<>();
 
 
@@ -111,11 +107,6 @@ public class UserProfile implements FlatUserProfile {
   @Override
   public String getUsername() {
     return username;
-  }
-
-  @Override
-  public UUID getFollowId() {
-    return followId;
   }
 
   @Override

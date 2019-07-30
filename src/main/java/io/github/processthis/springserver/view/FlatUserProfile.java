@@ -19,9 +19,7 @@ public interface FlatUserProfile {
 
   String getAuthId();
 
- // UUID getFollowId();
 
-  UUID getFollowId();
 
   String getBio();
 

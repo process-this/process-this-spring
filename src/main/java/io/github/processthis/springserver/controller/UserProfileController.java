@@ -74,12 +74,7 @@ public class UserProfileController {
     UserProfile userProfile = userProfileRepository.findById(id).get();
     return likeRepository.getAllByUserProfileOrderByCreatedAsc(userProfile);
   }
-
-  @GetMapping(value = "{id}/sketches", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<Sketch> getSketches(@PathVariable("id") UUID id) {
-    UserProfile sketch = userProfileRepository.findById(id).get();
-    return sketchRepository.getAllByUserProfile(sketch);
-  }
+  
 
   @PutMapping(value = "{userId}/likes/{sketchId}", produces = MediaType.APPLICATION_JSON_VALUE)
   public UserProfile like(@PathVariable("id") UUID userId, @PathVariable("id") UUID sketchId) {
