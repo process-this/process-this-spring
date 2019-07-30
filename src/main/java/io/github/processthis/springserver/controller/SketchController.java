@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -61,6 +62,13 @@ public class SketchController {
     return sketch;
   }
 
+  @GetMapping(value = "{sketchId}/likes/", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<Like> get(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId, @PathVariable UUID likeId) {
+    Sketch sketch = repository.findById(sketchId).get();
+    UserProfile userProfile = userProfileRepository.findById(userId).get();
+      return likeRepository.getAllByUserProfileOrderByCreatedAsc(userProfile);
+    }
+
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Sketch> attach(@PathVariable("userId") UUID userId, @RequestBody Sketch sketch) {
@@ -70,6 +78,16 @@ public class SketchController {
     userProfileRepository.save(userProfile);
     return ResponseEntity.created(sketch.getHref()).body(sketch);
   }
+
+//  @PutMapping(value = "{sketchId}/likes", produces = MediaType.APPLICATION_JSON_VALUE)
+//  public ResponseEntity<Like> attach(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId, @RequestBody Like like) {
+//    UserProfile userProfile = userProfileRepository.findById(userId).get();
+//    Sketch sketch = repository.findById(sketchId).get();
+//    like.setSketch(sketch);
+//    likeRepository.save(like);
+//    repository.save(sketch);
+//    return ResponseEntity.created(like.getHref()).body(like);
+//  }
 
   @ResponseStatus(value = HttpStatus.NOT_FOUND)
   @ExceptionHandler(NoSuchElementException.class)

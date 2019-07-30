@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.processthis.springserver.view.FlatSketch;
 import io.github.processthis.springserver.view.FlatUserProfile;
+import io.github.processthis.springserver.view.LikeSketch;
 import java.net.URI;
 import java.util.Date;
 import java.util.LinkedList;
@@ -34,7 +35,7 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Component
-@JsonIgnoreProperties(value = {"id","created","updated","href"},
+@JsonIgnoreProperties(value = {"id","created","updated","href", "sketches", "likes"},
     allowGetters = true, ignoreUnknown = true)
 public class UserProfile implements FlatUserProfile {
 
@@ -59,12 +60,7 @@ public class UserProfile implements FlatUserProfile {
   @Column(nullable = false)
   private Date updated;
 
-//  @Id
-//  @GeneratedValue(generator = "uuid2")
-//  @GenericGenerator(name = "uuid2", strategy = "uuid2")
-//  @Column(name = "user_profile_id", columnDefinition = "CHAR(16) FOR BIT DATA",
-//      nullable = false, updatable = false)
-  private UUID followId;
+
 
   @Column(nullable = false)
   private String authId;
@@ -75,10 +71,16 @@ public class UserProfile implements FlatUserProfile {
   @Column(nullable = true)
   private String bio;
 
-  @JsonIgnore
   @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfile", cascade = {CascadeType.DETACH,
       CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JsonSerialize(contentAs = FlatSketch.class)
   private List<Sketch> sketches = new LinkedList<>();
+
+
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "userProfile", cascade = {CascadeType.DETACH,
+      CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+  @JsonSerialize(contentAs = LikeSketch.class)
+  private List<Like> likes = new LinkedList<>();
 
   public List<Sketch> getSketches() {
     return sketches;
@@ -110,11 +112,6 @@ public class UserProfile implements FlatUserProfile {
   }
 
   @Override
-  public UUID getFollowId() {
-    return followId;
-  }
-
-  @Override
   public String getBio() {
     return bio;
   }
@@ -129,6 +126,10 @@ public class UserProfile implements FlatUserProfile {
 
   public void setBio(String bio) {
     this.bio = bio;
+  }
+
+  public List<Like> getLikes() {
+    return likes;
   }
 
   @Override

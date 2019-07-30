@@ -2,7 +2,10 @@ package io.github.processthis.springserver.model.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.processthis.springserver.view.FlatSketch;
+import io.github.processthis.springserver.view.FlatUserProfile;
+import io.github.processthis.springserver.view.LikeUserProfile;
 import java.net.URI;
 import java.util.Date;
 import java.util.LinkedList;
@@ -64,7 +67,13 @@ public class Sketch implements FlatSketch {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_profile")
+    @JsonSerialize(as = FlatUserProfile.class)
     private UserProfile userProfile;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "sketch", cascade = {CascadeType.DETACH,
+        CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @JsonSerialize(contentAs = LikeUserProfile.class)
+    private List<Like> likes = new LinkedList<>();
 
     public UserProfile getUserProfile() {
         return userProfile;
@@ -105,6 +114,10 @@ public class Sketch implements FlatSketch {
 
     public void setSketchDescription(String sketchDescription) {
         this.sketchDescription = sketchDescription;
+    }
+
+    public List<Like> getLikes() {
+        return likes;
     }
 
     public URI getHref(){

@@ -55,7 +55,8 @@ public class UserProfileController {
 
   @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public UserProfile get(@PathVariable("id") UUID id) {
-    return userProfileRepository.findById(id).get();
+    UserProfile userProfile = userProfileRepository.findById(id).get();
+    return userProfile;
   }
 
   @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -81,6 +82,39 @@ public class UserProfileController {
     return sketchRepository.getAllByUserProfile(sketch);
   }
 
+  @PutMapping(value = "{userId}/likes/{sketchId}", produces = MediaType.APPLICATION_JSON_VALUE)
+  public UserProfile like(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId) {
+    UserProfile userProfile = get(userId);
+    Sketch sketch = sketchRepository.findById(sketchId).get();
+    boolean alreadyLikes = false;
+    for (Like like : userProfile.getLikes()) {
+      if (like.getSketch().getId().equals(sketchId)) {
+        alreadyLikes = true;
+        break;
+      }
+    }
+    if (!alreadyLikes) {
+      Like like = new Like();
+      like.setSketch(sketch);
+      like.setUserProfile(userProfile);
+      likeRepository.save(like);
+ //     userProfile.getLikes().add(like);
+    }
+    return userProfile;
+  }
+
+  @DeleteMapping(value = "{userId}/likes/{sketchId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void unlike(@PathVariable("id") UUID userId, @PathVariable("id") UUID sketchId) {
+    UserProfile userProfile = get(userId);
+    Sketch sketch = sketchRepository.findById(sketchId).get();
+    for (Like like : userProfile.getLikes()) {
+      if (like.getSketch().getId().equals(sketchId)) {
+        likeRepository.delete(like);
+        break;
+      }
+    }
+  }
 
   @ResponseStatus(value = HttpStatus.NOT_FOUND)
   @ExceptionHandler(NoSuchElementException.class)
