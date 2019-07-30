@@ -55,7 +55,8 @@ public class UserProfileController {
 
   @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public UserProfile get(@PathVariable("id") UUID id) {
-    return userProfileRepository.findById(id).get();
+    UserProfile userProfile = userProfileRepository.findById(id).get();
+    return userProfile;
   }
 
   @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,10 +75,15 @@ public class UserProfileController {
     UserProfile userProfile = userProfileRepository.findById(id).get();
     return likeRepository.getAllByUserProfileOrderByCreatedAsc(userProfile);
   }
-  
+
+  @GetMapping(value = "{id}/sketches", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<Sketch> getSketches(@PathVariable("id") UUID id) {
+    UserProfile sketch = userProfileRepository.findById(id).get();
+    return sketchRepository.getAllByUserProfile(sketch);
+  }
 
   @PutMapping(value = "{userId}/likes/{sketchId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public UserProfile like(@PathVariable("id") UUID userId, @PathVariable("id") UUID sketchId) {
+  public UserProfile like(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId) {
     UserProfile userProfile = get(userId);
     Sketch sketch = sketchRepository.findById(sketchId).get();
     boolean alreadyLikes = false;
@@ -92,7 +98,7 @@ public class UserProfileController {
       like.setSketch(sketch);
       like.setUserProfile(userProfile);
       likeRepository.save(like);
-      userProfile.getLikes().add(like);
+ //     userProfile.getLikes().add(like);
     }
     return userProfile;
   }

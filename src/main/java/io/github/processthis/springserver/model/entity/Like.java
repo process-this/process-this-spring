@@ -3,6 +3,8 @@ package io.github.processthis.springserver.model.entity;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import io.github.processthis.springserver.view.FlatSketch;
 import io.github.processthis.springserver.view.FlatUserProfile;
+import io.github.processthis.springserver.view.LikeSketch;
+import io.github.processthis.springserver.view.LikeUserProfile;
 import java.net.URI;
 import java.util.Date;
 import java.util.LinkedList;
@@ -24,9 +26,9 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
-@Entity
+@Entity(name = "likes")
 @Component
-public class Like {
+public class Like implements LikeSketch, LikeUserProfile {
 
   private static EntityLinks entityLinks;
 
@@ -80,10 +82,10 @@ public class Like {
     this.sketch = sketch;
   }
 
-  public URI getHref(){
-    return entityLinks.linkForSingleResource(UserProfile.class, getUserProfile().getId())
-        .slash("sketches").slash(sketch).slash("likes").slash(id).toUri();
-  }
+//  public URI getHref(){
+//    return entityLinks.linkForSingleResource(UserProfile.class, getUserProfile().getId())
+//        .slash("sketches").slash(sketch).slash("likes").slash(id).toUri();
+//  }
 
 }
 

@@ -79,15 +79,15 @@ public class SketchController {
     return ResponseEntity.created(sketch.getHref()).body(sketch);
   }
 
-  @PutMapping(value = "{sketchId}/like", produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Like> attach(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId, @RequestBody Like like) {
-    UserProfile userProfile = userProfileRepository.findById(userId).get();
-    Sketch sketch = repository.findById(sketchId).get();
-    like.setSketch(sketch);
-    likeRepository.save(like);
-    repository.save(sketch);
-    return ResponseEntity.created(like.getHref()).body(like);
-  }
+//  @PutMapping(value = "{sketchId}/likes", produces = MediaType.APPLICATION_JSON_VALUE)
+//  public ResponseEntity<Like> attach(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId, @RequestBody Like like) {
+//    UserProfile userProfile = userProfileRepository.findById(userId).get();
+//    Sketch sketch = repository.findById(sketchId).get();
+//    like.setSketch(sketch);
+//    likeRepository.save(like);
+//    repository.save(sketch);
+//    return ResponseEntity.created(like.getHref()).body(like);
+//  }
 
   @ResponseStatus(value = HttpStatus.NOT_FOUND)
   @ExceptionHandler(NoSuchElementException.class)
