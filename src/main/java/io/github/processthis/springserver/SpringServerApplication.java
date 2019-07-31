@@ -13,14 +13,14 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Res
 @SpringBootApplication
 @EnableWebSecurity
 @EnableResourceServer
-public class SpringserverApplication extends ResourceServerConfigurerAdapter {
+public class SpringServerApplication extends ResourceServerConfigurerAdapter {
 
   @Value("${oauth.clientId}")
   private String clientId;
 
 
   public static void main(String[] args) {
-    SpringApplication.run(SpringserverApplication.class, args);
+    SpringApplication.run(SpringServerApplication.class, args);
   }
 
   @Override
