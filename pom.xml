@@ -11,11 +11,11 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
 
-  <groupId>edu.cnm.deepdive</groupId>
-  <artifactId>qod-service</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <name>Quote of the Day Service</name>
-  <description>Quote of the Day Spring Boot application</description>
+  <groupId>io.github.processthis</groupId>
+  <artifactId>springserver</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>process-this-spring</name>
+  <description>Server side of bestest group project ever</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -146,7 +146,7 @@
         <artifactId>spring-boot-maven-plugin</artifactId>
         <configuration>
           <layout>JAR</layout>
-          <mainClass>edu.cnm.deepdive.qod.QodApplication</mainClass>
+          <mainClass>io.github.processthis.springserver.SpringServerApplication</mainClass>
         </configuration>
       </plugin>
 
