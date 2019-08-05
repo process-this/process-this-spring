@@ -33,7 +33,7 @@ public class SearchController {
     this.likeRepository = likeRepository;
   }
 
-  @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_VALUE)
+  @GetMapping( produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Sketch> search(@RequestParam("q") String fragment) {
     return sketchRepository.findAllByNameContainingOrderByNameAsc(fragment);
   }
