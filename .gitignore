@@ -31,4 +31,4 @@ build/
 .vscode/
 
 processThis_db
-#derby.log
+derby.log
