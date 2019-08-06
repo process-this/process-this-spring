@@ -44,8 +44,8 @@ public class SearchController {
   }
 
   @GetMapping(value = "home", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<Sketch> getHome() {
-    return sketchRepository.getAllByNameOrderByCreatedAsc();
+  public List<Sketch> getHome(int count) {
+    return sketchRepository.getTopByOrderByCreatedDesc(count);
   }
 
 }
