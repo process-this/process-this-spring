@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+processThis_db
+derby.log

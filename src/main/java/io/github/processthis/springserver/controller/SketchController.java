@@ -18,6 +18,8 @@ import org.springframework.hateoas.ExposesResourceFor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -63,15 +65,17 @@ public class SketchController {
   }
 
   @GetMapping(value = "{sketchId}/likes/", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<Like> get(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId, @PathVariable UUID likeId) {
+  public List<Like> getLikes(@PathVariable("userId") UUID userId,
+      @PathVariable("sketchId") UUID sketchId) {
     Sketch sketch = repository.findById(sketchId).get();
     UserProfile userProfile = userProfileRepository.findById(userId).get();
-      return likeRepository.getAllByUserProfileOrderByCreatedAsc(userProfile);
-    }
+    return likeRepository.getAllByUserProfileOrderByCreatedAsc(userProfile);
+  }
 
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-  public ResponseEntity<Sketch> attach(@PathVariable("userId") UUID userId, @RequestBody Sketch sketch) {
+  public ResponseEntity<Sketch> attach(@PathVariable("userId") UUID userId,
+      @RequestBody Sketch sketch) {
     UserProfile userProfile = userProfileRepository.findById(userId).get();
     sketch.setUserProfile(userProfile);
     repository.save(sketch);
@@ -79,33 +83,27 @@ public class SketchController {
     return ResponseEntity.created(sketch.getHref()).body(sketch);
   }
 
-//  @PutMapping(value = "{sketchId}/likes", produces = MediaType.APPLICATION_JSON_VALUE)
-//  public ResponseEntity<Like> attach(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId, @RequestBody Like like) {
-//    UserProfile userProfile = userProfileRepository.findById(userId).get();
-//    Sketch sketch = repository.findById(sketchId).get();
-//    like.setSketch(sketch);
-//    likeRepository.save(like);
-//    repository.save(sketch);
-//    return ResponseEntity.created(like.getHref()).body(like);
-//  }
 
   @ResponseStatus(value = HttpStatus.NOT_FOUND)
   @ExceptionHandler(NoSuchElementException.class)
-  public void notFound(){}
+  public void notFound() {
+  }
+
+
+  @Transactional
+  @DeleteMapping(value = "{sketchId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteSketch(@PathVariable("userId") UUID userId,
+      @PathVariable("sketchId") UUID sketchId) {
+    Sketch sketch = get(userId, sketchId);
+    UserProfile userProfile = userProfileRepository.findById(userId).get();
+    List<Like> likes = sketch.getLikes();
+    likes.forEach(likeRepository::delete);
+    repository.delete(sketch);
+    userProfileRepository.save(userProfile);
+  }
+
 }
-
-   // @Transactional
-   // @DeleteMapping(value = "{id}")
-   // @ResponseStatus(HttpStatus.NO_CONTENT)
-   // public void delete(@PathVariable("id") UUID id) {
-   //   Sketch sketch = get(id);
-   //   List<Like> like = sketch.getLikes();
-//    for (Movie movie : genre.getMovies()){
-//      movie.setGenre(null);
-//    }
-
-    //  userProfileRepository.saveAll(userProfiles);
-    //  repository.delete(sketch);
 
 
 

@@ -75,9 +75,22 @@ public class Sketch implements FlatSketch {
     @JsonSerialize(contentAs = LikeUserProfile.class)
     private List<Like> likes = new LinkedList<>();
 
+    @Column(length = 4000)
+    private String code;
+
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
+    }
+
     public UserProfile getUserProfile() {
         return userProfile;
     }
+
 
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
@@ -124,6 +137,7 @@ public class Sketch implements FlatSketch {
         return entityLinks.linkForSingleResource(UserProfile.class, getUserProfile().getId())
             .slash("sketches").slash(id).toUri();
     }
+
 
     @PostConstruct
     private void init(){
