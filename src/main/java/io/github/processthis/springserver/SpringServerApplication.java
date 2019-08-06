@@ -10,6 +10,10 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 
+/**
+ * This class defines the application a Spring server application. It includes the main method and
+ * methods defining the the http protocol and Google-Sign In identofication
+ */
 @SpringBootApplication
 @EnableWebSecurity
 @EnableResourceServer
@@ -19,15 +23,25 @@ public class SpringServerApplication extends ResourceServerConfigurerAdapter {
   private String clientId;
 
 
+  /**
+   * This is the main method. It is a required entry-point for any Java application to run. This one
+   * calls the SpringServerApplication class that houses is
+   */
   public static void main(String[] args) {
     SpringApplication.run(SpringServerApplication.class, args);
   }
 
+  /**
+   * This method refines the resource Id as the the client Id parameter
+   */
   @Override
   public void configure(ResourceServerSecurityConfigurer resources) throws Exception {
     resources.resourceId(clientId);
   }
 
+  /**
+   * This method defines what roles may access the server  and defines what rights those roles have
+   */
   @Override
   public void configure(HttpSecurity http) throws Exception {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

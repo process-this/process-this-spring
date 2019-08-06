@@ -26,6 +26,9 @@ import org.springframework.hateoas.EntityLinks;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
+/**
+ * The class implements the FlatLike interface and defines the attributes of a Like Object as well as setters and getters for those fields
+ */
 @Entity(name = "likes")
 @Component
 public class Like implements LikeSketch, LikeUserProfile {
@@ -49,7 +52,7 @@ public class Like implements LikeSketch, LikeUserProfile {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_profile_id", nullable = false)
   @JsonSerialize(as = FlatUserProfile.class)
-  private UserProfile userProfile ;
+  private UserProfile userProfile;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "sketch_id", nullable = false)
@@ -57,42 +60,50 @@ public class Like implements LikeSketch, LikeUserProfile {
   private Sketch sketch;
 
 
+  /**
+   * Gets the UUID of a Like object
+   */
   public UUID getId() {
     return id;
   }
 
+  /**
+   * gets the date a Like was created as a Date
+   * @return
+   */
   public Date getCreated() {
     return created;
   }
 
 
+  /**
+   * Gets the userProfile that created a like
+   * @return
+   */
   public UserProfile getUserProfile() {
     return userProfile;
   }
 
+  /**sets the userprofile that created a like
+   * @param userProfile
+   */
   public void setUserProfile(UserProfile userProfile) {
     this.userProfile = userProfile;
   }
 
+  /**gets te sketched liked by a user
+   * @return
+   */
   public Sketch getSketch() {
     return sketch;
   }
 
+  /**
+   * sets the sketch liked by a userProfile
+   * @param
+   */
   public void setSketch(Sketch sketch) {
     this.sketch = sketch;
   }
 
-//  public URI getHref(){
-//    return entityLinks.linkForSingleResource(UserProfile.class, getUserProfile().getId())
-//        .slash("sketches").slash(sketch).slash("likes").slash(id).toUri();
-//  }
-
 }
-
-
-// use .size to check how many likes are there
-
-// sketches/ {id}/like/{user_id}   sketches and its id to see the likes by user
-//users/{id}/like/{sketch_id} users and their id to see the sketches they have like'd
-//will use sketch controller and user controller to delete likes
-

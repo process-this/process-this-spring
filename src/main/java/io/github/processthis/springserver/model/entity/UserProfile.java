@@ -33,9 +33,13 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * This class implements FlatUserProfile. it defines the attributes of a userProfile object and
+ * creates setters and getters for those fields
+ */
 @Entity
 @Component
-@JsonIgnoreProperties(value = {"id","created","updated","href", "sketches", "likes"},
+@JsonIgnoreProperties(value = {"id", "created", "updated", "href", "sketches", "likes"},
     allowGetters = true, ignoreUnknown = true)
 public class UserProfile implements FlatUserProfile {
 
@@ -61,7 +65,6 @@ public class UserProfile implements FlatUserProfile {
   private Date updated;
 
 
-
   @Column(nullable = false)
   private String authId;
 
@@ -82,66 +85,108 @@ public class UserProfile implements FlatUserProfile {
   @JsonSerialize(contentAs = LikeSketch.class)
   private List<Like> likes = new LinkedList<>();
 
+  /**
+   * Gets a list of all sketches made by a user
+   */
   public List<Sketch> getSketches() {
     return sketches;
   }
 
+  /**
+   * Gets the user's UUID
+   */
   @Override
   public UUID getId() {
     return id;
   }
 
+  /**
+   * Gets the date the UserProfile was created
+   */
   @Override
   public Date getCreated() {
     return created;
   }
 
+  /**
+   * Gets the date user profile was updated
+   */
   @Override
   public Date getUpdated() {
     return updated;
   }
 
+  /**
+   * Gets the authId
+   */
   @Override
   public String getAuthId() {
     return authId;
   }
 
+  /**
+   * Gets the username
+   */
   @Override
   public String getUsername() {
     return username;
   }
 
+  /**
+   * Gets the userProfile bio
+   */
   @Override
   public String getBio() {
     return bio;
   }
 
+  /**
+   * sets the authId
+   */
   public void setAuthId(String authId) {
     this.authId = authId;
   }
 
+  /**
+   * sets the userName
+   */
   public void setUsername(String username) {
     this.username = username;
   }
 
+  /**
+   * Sets the user bio
+   */
   public void setBio(String bio) {
     this.bio = bio;
   }
 
+  /**
+   * Get a list of all likes a user has made
+   */
   public List<Like> getLikes() {
     return likes;
   }
 
+  /**
+   * Gets the URI path to the userProfile
+   */
   @Override
   public URI getHref() {
     return entityLinks.linkForSingleResource(UserProfile.class, id).toUri();
   }
 
+  /**
+   * Required method for Spring entity that initializes UserProfile as a SpringBean
+   */
   @PostConstruct
   private void init() {
     String ignore = entityLinks.toString();
   }
 
+  /**
+   * Sets the enititylinks Spring field
+   */
   @Autowired
   public void setEntityLinks(EntityLinks entityLinks) {
     UserProfile.entityLinks = entityLinks;

@@ -32,9 +32,14 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 
+/**
+ * * This class implements FlatSketchr. it defines the attributes of a userProfile object and *
+ * creates setters and getters for those fields
+ */
 @Entity
 @Component
-@JsonIgnoreProperties(value = {"created", "updated", "href"}, allowGetters = true, ignoreUnknown = true)
+@JsonIgnoreProperties(value = {"created", "updated",
+    "href"}, allowGetters = true, ignoreUnknown = true)
 public class Sketch implements FlatSketch {
 
     private static EntityLinks entityLinks;
@@ -79,47 +84,77 @@ public class Sketch implements FlatSketch {
     private String code;
 
 
+    /**
+     * Gets the code comprising a sketch as a String literal
+     */
     public String getCode() {
         return code;
     }
 
+    /**
+     * sets the code comprising a sketch as a string literal
+     */
     public void setCode(String code) {
         this.code = code;
     }
 
+    /**
+     * gets the userProfile who created a sketch
+     */
     public UserProfile getUserProfile() {
         return userProfile;
     }
 
 
+    /**
+     * sets the userprofile who created a sketch
+     */
     public void setUserProfile(UserProfile userProfile) {
         this.userProfile = userProfile;
     }
 
+    /**
+     * Gets the UUID of a sketch
+     */
     @Override
     public UUID getId() {
         return id;
     }
 
+    /**
+     * Gets the date a sketch was created a Date
+     */
     @Override
     public Date getCreated() {
         return created;
     }
 
+    /**
+     * Gets the date a sketch was updated as Date
+     */
     @Override
     public Date getUpdated() {
         return updated;
     }
 
+    /**
+     * Gets the name of a sketch as a String
+     */
     @Override
     public String getName() {
         return name;
     }
 
+    /**
+     * Sets the name of sketch
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets the String description of a Sketch
+     */
     @Override
     public String getSketchDescription() {
         return sketchDescription;
@@ -129,23 +164,32 @@ public class Sketch implements FlatSketch {
         this.sketchDescription = sketchDescription;
     }
 
+    /**
+     * Gets a list of likes associated with a sketch
+     */
     public List<Like> getLikes() {
         return likes;
     }
 
-    public URI getHref(){
+    public URI getHref() {
         return entityLinks.linkForSingleResource(UserProfile.class, getUserProfile().getId())
             .slash("sketches").slash(id).toUri();
     }
 
 
+    /**
+     * Required method for Spring entity that initializes sketch as a SpringBean
+     */
     @PostConstruct
-    private void init(){
+    private void init() {
         String ignore = entityLinks.toString();
     }
 
+    /**
+     * * Required method for Spring entity that initializes sketch as a SpringBean
+     */
     @Autowired
-    private void setEntityLinks(EntityLinks entityLinks){
+    private void setEntityLinks(EntityLinks entityLinks) {
         Sketch.entityLinks = entityLinks;
     }
 
