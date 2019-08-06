@@ -38,6 +38,8 @@ public interface SketchRepository extends CrudRepository <Sketch, UUID> {
 
   List<Sketch> findAllByNameContainingOrderByNameAsc(String fragment);
 
+  List<Sketch> getAllByNameOrderByCreatedAsc();
+
   @Query(value = FEATURED_QUERY, nativeQuery = true)
   List<Sketch> getMostLikedSketches(int count);
 

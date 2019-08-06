@@ -43,5 +43,9 @@ public class SearchController {
     return sketchRepository.getMostLikedSketches(count);
   }
 
+  @GetMapping(value = "home", produces = MediaType.APPLICATION_JSON_VALUE)
+  public List<Sketch> getHome() {
+    return sketchRepository.getAllByNameOrderByCreatedAsc();
+  }
 
 }
