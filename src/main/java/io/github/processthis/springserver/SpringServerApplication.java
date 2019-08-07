@@ -46,7 +46,7 @@ public class SpringServerApplication extends ResourceServerConfigurerAdapter {
   public void configure(HttpSecurity http) throws Exception {
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     http.authorizeRequests().anyRequest().anonymous();
-//    http.authorizeRequests().anyRequest().hasRole("USER");
+    //http.authorizeRequests().anyRequest().hasRole("USER");
   }
 
 }
