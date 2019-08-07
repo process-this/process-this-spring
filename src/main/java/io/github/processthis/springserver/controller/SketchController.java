@@ -30,6 +30,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This controller class contains a myriad of methods that didn't actually end up in the the beta
+ * release. But, they're really cool
+ */
 @RestController
 @ExposesResourceFor(Sketch.class)
 @RequestMapping("users/{userId}/sketches")
@@ -39,6 +43,10 @@ public class SketchController {
   private final UserProfileRepository userProfileRepository;
   private final LikeRepository likeRepository;
 
+  /**
+   * This constructor creates an instance of the SketchController class from the three repository
+   * parameters listed below.
+   */
   @Autowired
   public SketchController(
       SketchRepository repository,
@@ -49,6 +57,10 @@ public class SketchController {
     this.likeRepository = likeRepository;
   }
 
+
+  /**
+   * This method returns a list of all sketch objects ordered by name
+   */
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Sketch> get() {
     return repository.getAllByOrderByNameAsc();
@@ -63,6 +75,13 @@ public class SketchController {
     return sketch;
   }
 
+  /**
+   * This method returns s a list of all users who have liked a sketch ordered by the date they
+   * liked it
+   *
+   * @param userId the userId that created the sketch
+   * @param sketchId the sketch of interest
+   */
   @GetMapping(value = "{sketchId}/likes/", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Like> getLikes(@PathVariable("userId") UUID userId,
       @PathVariable("sketchId") UUID sketchId) {
@@ -72,6 +91,13 @@ public class SketchController {
   }
 
 
+  /**
+   * This method creates a sketch object tied to a user profile
+   *
+   * @param userId the user profile creating a sketch
+   * @param sketch the sketch being created
+   * @return a response entity of the sketch object
+   */
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<Sketch> attach(@PathVariable("userId") UUID userId,
       @RequestBody Sketch sketch) {
@@ -83,12 +109,22 @@ public class SketchController {
   }
 
 
+  /**
+   * This method makes people sad. It's called when they search for a non-existent class
+   */
   @ResponseStatus(value = HttpStatus.NOT_FOUND)
   @ExceptionHandler(NoSuchElementException.class)
   public void notFound() {
   }
 
 
+  /**
+   * This method deletes a sketch object, any likes that had referenced it, and deletes its
+   * reference in the user profile. It's kinda hawt.
+   *
+   * @param userId the userId whp created the sketch to be deleted
+   * @param sketchId the sketch being deleted
+   */
   @Transactional
   @DeleteMapping(value = "{sketchId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)

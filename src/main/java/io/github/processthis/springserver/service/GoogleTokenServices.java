@@ -26,6 +26,9 @@ import org.springframework.security.oauth2.provider.token.DefaultAccessTokenConv
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.stereotype.Component;
 
+/**
+ * This class implements the necessary code for Google Sign-In services
+ */
 @Component
 public class GoogleTokenServices implements ResourceServerTokenServices {
 
@@ -34,6 +37,14 @@ public class GoogleTokenServices implements ResourceServerTokenServices {
 
   private final AccessTokenConverter converter = new DefaultAccessTokenConverter();
 
+  /**
+   * This method loads the access token provided by a client accessing the server. It throws an
+   * exception is the token was invalid or a different exception if the authentication process
+   * failed for a different reason
+   *
+   * @throws AuthenticationException authentication failed
+   * @throws InvalidTokenException the access token was invalid
+   */
   @Override
   public OAuth2Authentication loadAuthentication(String accessToken)
       throws AuthenticationException, InvalidTokenException {
@@ -45,8 +56,9 @@ public class GoogleTokenServices implements ResourceServerTokenServices {
           .build();
       GoogleIdToken idToken = verifier.verify(accessToken);
       if (idToken != null) {
-        Payload payload = idToken.getPayload(); // Payload may contain more useful info than we're using.
-        // TODO CHeck user registry (if any) to see what roles should be granted.
+        Payload payload = idToken
+            .getPayload(); // Payload may contain more useful info than we're using.
+        // TODO Check user registry (if any) to see what roles should be granted.
         Collection<GrantedAuthority> grants =
             Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
         Authentication base =
@@ -61,6 +73,10 @@ public class GoogleTokenServices implements ResourceServerTokenServices {
     }
   }
 
+  /**
+   * This method is a required override to any class implementing the ResourceServerTokenServices
+   * interface
+   */
   @Override
   public OAuth2AccessToken readAccessToken(String s) {
     return null;
