@@ -35,7 +35,7 @@ import org.springframework.stereotype.Component;
 
 @Entity
 @Component
-@JsonIgnoreProperties(value = {"id","created","updated","href", "sketches", "likes"},
+@JsonIgnoreProperties(value = {"created","updated","href", "sketches", "likes"},
     allowGetters = true, ignoreUnknown = true)
 public class UserProfile implements FlatUserProfile {
 
@@ -60,9 +60,8 @@ public class UserProfile implements FlatUserProfile {
   @Column(nullable = false)
   private Date updated;
 
-
-
-  @Column(nullable = false)
+  @Column(nullable = false
+  )
   private String authId;
 
   @Column(nullable = false)
@@ -86,6 +85,11 @@ public class UserProfile implements FlatUserProfile {
     return sketches;
   }
 
+
+  /**
+   *
+   * @return
+   */
   @Override
   public UUID getId() {
     return id;

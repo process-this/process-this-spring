@@ -49,7 +49,6 @@ public class SketchController {
     this.likeRepository = likeRepository;
   }
 
-
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Sketch> get() {
     return repository.getAllByOrderByNameAsc();
