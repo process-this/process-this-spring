@@ -1,0 +1,6 @@
+io.github.processthis.springserver
+io.github.processthis.springserver.controller
+io.github.processthis.springserver.model.dao
+io.github.processthis.springserver.model.entity
+io.github.processthis.springserver.service
+io.github.processthis.springserver.view

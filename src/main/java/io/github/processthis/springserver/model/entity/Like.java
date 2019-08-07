@@ -27,7 +27,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 /**
- * The class implements the FlatLike interface and defines the attributes of a Like Object as well as setters and getters for those fields
+ * The class implements the FlatLike interface and defines the attributes of a Like Object as well
+ * as setters and getters for those fields
  */
 @Entity(name = "likes")
 @Component
@@ -69,7 +70,6 @@ public class Like implements LikeSketch, LikeUserProfile {
 
   /**
    * gets the date a Like was created as a Date
-   * @return
    */
   public Date getCreated() {
     return created;
@@ -78,21 +78,20 @@ public class Like implements LikeSketch, LikeUserProfile {
 
   /**
    * Gets the userProfile that created a like
-   * @return
    */
   public UserProfile getUserProfile() {
     return userProfile;
   }
 
-  /**sets the userprofile that created a like
-   * @param userProfile
+  /**
+   * sets the userprofile that created a like
    */
   public void setUserProfile(UserProfile userProfile) {
     this.userProfile = userProfile;
   }
 
-  /**gets te sketched liked by a user
-   * @return
+  /**
+   * gets te sketched liked by a user
    */
   public Sketch getSketch() {
     return sketch;
@@ -100,7 +99,6 @@ public class Like implements LikeSketch, LikeUserProfile {
 
   /**
    * sets the sketch liked by a userProfile
-   * @param
    */
   public void setSketch(Sketch sketch) {
     this.sketch = sketch;
