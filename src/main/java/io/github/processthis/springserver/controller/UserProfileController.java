@@ -28,6 +28,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * This class contains methods primarily accessing the userProfile entity and likes
+ */
 @RestController
 @RequestMapping("users")
 @ExposesResourceFor(UserProfile.class)
@@ -38,6 +41,10 @@ public class UserProfileController {
   private final LikeRepository likeRepository;
 
 
+  /**
+   * THis constructor creates an instance of UserProfileController class using the fields listed
+   * below
+   */
   public UserProfileController(
       UserProfileRepository userProfileRepository,
       SketchRepository sketchRepository,
@@ -47,43 +54,79 @@ public class UserProfileController {
     this.likeRepository = likeRepository;
   }
 
+  /**
+   * This method returns a list of all userProfile objects ordered by name
+   */
   @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
   @JsonSerialize(contentAs = FlatUserProfile.class)
   public List<UserProfile> userList() {
     return userProfileRepository.getAllByOrderByUsernameAsc();
   }
 
+  /**
+   * This method queries and returns one specific user profile by UUID
+   *
+   * @param id the userProfile UUID
+   */
   @GetMapping(value = "{id}", produces = MediaType.APPLICATION_JSON_VALUE)
   public UserProfile get(@PathVariable("id") UUID id) {
     UserProfile userProfile = userProfileRepository.findById(id).get();
     return userProfile;
   }
 
+  /**
+   * This method queries and returns a list of all user profiles whose name contains the string
+   * fragment supplied as a parameter
+   *
+   * @param profileFragment thr string used as the search parameter
+   */
   @GetMapping(value = "search", produces = MediaType.APPLICATION_JSON_VALUE)
-  public List<UserProfile> search(@RequestParam(value = "q", required = true) String profileFragment){
+  public List<UserProfile> search(
+      @RequestParam(value = "q", required = true) String profileFragment) {
     return userProfileRepository.getAllByUsernameContainsOrderByUsernameAsc(profileFragment);
   }
 
+  /**
+   * This method will save changes to or create a new user profile
+   *
+   * @param userProfile attributes of the userProfile object being created, both name and authId are
+   * required nonnull values
+   * @return the new user profile
+   */
   @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
   public ResponseEntity<UserProfile> userPost(@RequestBody UserProfile userProfile) {
     userProfileRepository.save(userProfile);
     return ResponseEntity.created(userProfile.getHref()).body(userProfile);
   }
 
+  /**
+   * returns a list ordered by date created of all likes created by a user with a given userId
+   */
   @GetMapping(value = "{id}/likes", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Like> getLikes(@PathVariable("id") UUID id) {
     UserProfile userProfile = userProfileRepository.findById(id).get();
     return likeRepository.getAllByUserProfileOrderByCreatedAsc(userProfile);
   }
 
+  /**
+   * returns a list of all sketches created by a user with a given Id
+   */
   @GetMapping(value = "{id}/sketches", produces = MediaType.APPLICATION_JSON_VALUE)
   public List<Sketch> getSketches(@PathVariable("id") UUID id) {
     UserProfile sketch = userProfileRepository.findById(id).get();
     return sketchRepository.getAllByUserProfile(sketch);
   }
 
+  /**
+   * Creates a like between a user of a given Id to a sketch of a given Id
+   *
+   * @param userId user "liking" a sketch
+   * @param sketchId sketch being liked
+   * @return user profile with new like object attached
+   */
   @PutMapping(value = "{userId}/likes/{sketchId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  public UserProfile like(@PathVariable("userId") UUID userId, @PathVariable("sketchId") UUID sketchId) {
+  public UserProfile like(@PathVariable("userId") UUID userId,
+      @PathVariable("sketchId") UUID sketchId) {
     UserProfile userProfile = get(userId);
     Sketch sketch = sketchRepository.findById(sketchId).get();
     boolean alreadyLikes = false;
@@ -98,11 +141,17 @@ public class UserProfileController {
       like.setSketch(sketch);
       like.setUserProfile(userProfile);
       likeRepository.save(like);
- //     userProfile.getLikes().add(like);
     }
     return userProfile;
   }
 
+  /**
+   * This method deletes a like object that had been created between a user with a given Id and a
+   * sketch with a given Id
+   *
+   * @param userId user who used to like a sketch
+   * @param sketchId the sketch that's feeling no love
+   */
   @DeleteMapping(value = "{userId}/likes/{sketchId}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void unlike(@PathVariable("id") UUID userId, @PathVariable("id") UUID sketchId) {
@@ -116,8 +165,11 @@ public class UserProfileController {
     }
   }
 
+  /**
+   * This method says mean things about you when you go to sleep at night
+   */
   @ResponseStatus(value = HttpStatus.NOT_FOUND)
   @ExceptionHandler(NoSuchElementException.class)
-  public void notFound(){
+  public void notFound() {
   }
 }
