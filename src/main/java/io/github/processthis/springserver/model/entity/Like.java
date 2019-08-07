@@ -1,3 +1,16 @@
+/*  Copyright [2019] [Asher Bearce, Jeffery Franken, Matthew Jones, Jennifer Nevares-Diaz]
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+    http://www.apache.org/licenses/LICENSE-2.0
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+   limitations under the License.
+*/
+
+
 package io.github.processthis.springserver.model.entity;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
@@ -27,7 +40,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Component;
 
 /**
- * The class implements the FlatLike interface and defines the attributes of a Like Object as well as setters and getters for those fields
+ * The class implements the FlatLike interface and defines the attributes of a Like Object as well
+ * as setters and getters for those fields
  */
 @Entity(name = "likes")
 @Component
@@ -69,7 +83,6 @@ public class Like implements LikeSketch, LikeUserProfile {
 
   /**
    * gets the date a Like was created as a Date
-   * @return
    */
   public Date getCreated() {
     return created;
@@ -78,21 +91,20 @@ public class Like implements LikeSketch, LikeUserProfile {
 
   /**
    * Gets the userProfile that created a like
-   * @return
    */
   public UserProfile getUserProfile() {
     return userProfile;
   }
 
-  /**sets the userprofile that created a like
-   * @param userProfile
+  /**
+   * sets the userprofile that created a like
    */
   public void setUserProfile(UserProfile userProfile) {
     this.userProfile = userProfile;
   }
 
-  /**gets te sketched liked by a user
-   * @return
+  /**
+   * gets te sketched liked by a user
    */
   public Sketch getSketch() {
     return sketch;
@@ -100,7 +112,6 @@ public class Like implements LikeSketch, LikeUserProfile {
 
   /**
    * sets the sketch liked by a userProfile
-   * @param
    */
   public void setSketch(Sketch sketch) {
     this.sketch = sketch;
